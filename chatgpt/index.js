@@ -12,22 +12,37 @@ dotenv.config({
 })
 
 // Configure the OpenAI client
-const openai = new OpenAI();
+const openai = new OpenAI( {
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+let history = [];
 
 // Create a generic function that calls the OpenAI API for chat completion
 async function chat(content) {
+  history.push({ role: "user", content });
+  console.log(history);
   const completion = await openai.chat.completions.create({
-    messages: [
-      { role: "user", content }
-    ],
-    model: "gpt-3.5-turbo"
+    model: 'gpt-3.5-turbo',
+    messages: history,
+    max_tokens: 100,
+    n: 1,
+    stop: null,
+    temperature: 0.5,
   });
-  return completion.choices;
+  const responseText = completion.choices[0].message.content;
+  console.log(responseText);
+  history.push({ role: "system", content: responseText });
+  return responseText;
 }
 
 // Print the response of the API call
-console.log(await chat("Who was Luke Skywalker's father?"));
-console.log(await chat("How many students are currently enrolled at UCLA?"));
+async function runExamples() {
+  console.log(await chat("Who was Luke Skywalker's father?"));
+  console.log(await chat("How many students are currently enrolled at UCLA?"));
+}
+
+runExamples().catch(console.error);
 
 /* EXAMPLE RESPONSE:
    [
