@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <h1> Upload an Order </h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Box with Dynamic Dropdown Menus</title>
+<style>
+  .input-container {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<p> Dining Hall </p>
+<div class="input-container">
+  <!-- First input field -->
+  <select id="inputField1">
+    <option value="Rendez">Rendezvous West</option>
+    <option value="Study">Hedrick Study</option>
+    <option value="Epic">Epic at Ackerman</option>
+    <option value="BCafe">Bruin Cafe</option>
+  </select>
+</div>
+
+<p>Item Type</p>
+<div class="input-container">
+  <!-- Second input field -->
+  <select id="inputField2">
+    <!-- Options will be populated dynamically based on the selection in the first dropdown -->
+  </select>
+</div>
+
+<p> Description </p>
+<div class="input-container">
+  <!-- Description input field -->
+  <input type="text" id="descriptionField" placeholder="Describe your order (i.e. Chicken Burrito Bowl)">
+</div>
+
+<div class="input-container">
+  <!-- Submit button -->
+  <button id="submitButton">Submit</button>
+</div>
+
+
+
+<script>
+// Define options for the second dropdown based on the selection in the first dropdown
+var optionsByCategory = {
+  Rendez: ["Burrito", "Burrito Bowl", "Taco", "Taco Salad"],
+  Study: ["Salad", "Pizza", "Croque Madame", "Croque Monsieur", "Choc Hazel Fruit Crepe", "Choc Hazel Fruit Waffle", "Fruit Waffle with Cream"
+, "Sandwich", "Soup & Salad", "Coffee Combo", "Coffee Fruit Combo", "Pastries"],
+  Epic: ["Pizza", "Pasta"],
+  BCafe: ["Sandwich", "Pizza", "Parfait", "Wrap", "Coffee & Pastries", "Coffee & Fruit", "Coffee & Bagel", "Pastries", "Pastry & Fruit"]
+};
+
+// Function to populate options in the second dropdown based on the selection in the first dropdown
+function populateOptions() {
+  var inputField1Value = document.getElementById("inputField1").value;
+  var inputField2 = document.getElementById("inputField2");
+  inputField2.innerHTML = ""; // Clear previous options
+  
+  var options = optionsByCategory[inputField1Value];
+  
+  options.forEach(function(option) {
+    var optionElement = document.createElement("option");
+    optionElement.textContent = option;
+    optionElement.value = option;
+    inputField2.appendChild(optionElement);
+  });
+}
+
+// Populate options in the second dropdown initially
+populateOptions();
+
+// Event listener to populate options in the second dropdown when the first dropdown value changes
+document.getElementById("inputField1").addEventListener("change", populateOptions);
+
+// Function to handle form submission
+document.getElementById("submitButton").addEventListener("click", function() {
+  // Get values from input fields
+  var category = document.getElementById("inputField1").value;
+  var selection = document.getElementById("inputField2").value;
+  var description = document.getElementById("descriptionField").value;
+
+  // Create a new Item object
+  var newItem = new Item(category, selection, description);
+  
+  // Do something with the newItem object (e.g., send it to a server, display it on the page, etc.)
+  console.log(newItem);
+
+  // Reset form fields
+  document.getElementById("inputField1").value = "";
+  document.getElementById("inputField2").innerHTML = "";
+  document.getElementById("descriptionField").value = "";
+
+  // Show success message
+  alert("Success!");
+});
+
+// Item constructor function
+function Item(category, selection, description) {
+  this.category = category;
+  this.selection = selection;
+  this.description = description;
+}
+
+</script>
+
+</body>
+</html>

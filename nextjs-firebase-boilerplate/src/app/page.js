@@ -38,6 +38,9 @@ function Page() {
               <Link href="/profile" legacyBehavior>
                 <a className={styles.navLink}>Profile</a>
               </Link>
+              <Link href="/upload" legacyBehavior>
+                <a className={styles.navLink}>Upload an Order</a>
+              </Link>
               <Link href="/settings" legacyBehavior>
                 <a className={styles.navLink}>Settings</a>
               </Link>
