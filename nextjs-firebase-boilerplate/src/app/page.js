@@ -35,6 +35,9 @@ function Page() {
           </Link>
           {user ? (
             <>
+              <Link href="/unclaimed" legacyBehavior>
+                <a className={styles.navLink}>Unclaimed</a>
+              </Link>
               <Link href="/profile" legacyBehavior>
                 <a className={styles.navLink}>Profile</a>
               </Link>
